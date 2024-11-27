@@ -1,0 +1,38 @@
+{
+  "name": "olivanders-shop",
+  "version": "1.0.0",
+  "description": "API funcnionality:  -Search by character name  -Search the wands cores and woods  -Search info of all existing wands  -Automatic crud with irl time translatios to update the database using an external api    -The crud is to add new characters, new wands, new transfers",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "type": "module",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saulm96/Olivanders-shop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saulm96/Olivanders-shop/issues"
+  },
+  "homepage": "https://github.com/saulm96/Olivanders-shop#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.4",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.7"
+  }
+}
