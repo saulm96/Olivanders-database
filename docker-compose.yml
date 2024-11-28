@@ -9,13 +9,12 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
-      
     ports:
       - ${DB_PORT}:3306
       
     volumes:
-      - ./database/script:/docker-entrypoint-initdb.d:ro
-      - ./database/conf/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+      - ./mySQL/scripts:/docker-entrypoint-initdb.d:ro
+      - ./mySQL/conf/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
       - /var/lib/mysql
   backend:
     build: .

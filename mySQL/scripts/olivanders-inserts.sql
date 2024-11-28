@@ -1,9 +1,36 @@
+SET FOREIGN_KEY_CHECKS= 0;
+
+TRUNCATE TABLE languages;
+TRUNCATE TABLE wandmakers;
+TRUNCATE TABLE wands;
+TRUNCATE TABLE wand_has_wood;
+TRUNCATE TABLE wand_has_core;
+
+SET FOREIGN_KEY_CHECKS= 1;
+
+-- Inserts for the woods table
+
 -- Inserts for the languages
 INSERT INTO `Olivanders`.`languages` (`name`, `iso_code`)
 VALUES
 ('English' , 'en'),
 ('Español' , 'es'),
 ('Italiano', 'it');
+
+-- Inserts for the main wandmakers table
+INSERT INTO `Olivanders`.`wandmakers`(`wandmaker_id`, `name`, `last_name`)
+VALUES
+(1, 'Garrick', 'Olivander'),
+(2, 'Salazar', 'Slytherin'),
+(3, 'Death', ''),
+(4, 'Antioch', 'Peverell'),
+(5, 'Isolt', 'Sayre'),
+(6, 'James', 'Steward'),
+(7, 'Arturo', 'Cephalopos'),
+(8, 'Mykew', 'Gregorovitch'),
+(9, 'Violetta', 'Beauvais'),
+(10, 'Shikoba', 'Wolfe');
+
 
 -- Inserts for wandmaker table, where are the translatable columns for wandmaker relations
 INSERT INTO `Olivanders`.`wandmaker_has_language`(`wandmaker_id`, `language_id`, `specialty`)
@@ -49,19 +76,6 @@ VALUES
 (10, 2, 'Wolfe era conocido sobre todo por fabricar varitas talladas de forma intrincada. Las varitas hechas por Wolfe contenían plumas de cola de ave del trueno como núcleo y se creía que eran extremadamente poderosas, pero difíciles de dominar. Eran especialmente codiciadas por los practicantes de la Transfiguración. Una de estas varitas era la de Holly Blackbird, un valioso «original de Shikoba Wolfe».'),
 (10, 3, 'Era noto soprattutto per la produzione di bacchette intricate e intagliate. Le bacchette di Wolfe contenevano al loro interno piume di coda di uccello tonante e si riteneva che fossero estremamente potenti, ma difficili da padroneggiare. Erano particolarmente ambite dai praticanti di Trasfigurazione. Una di queste bacchette era quella di Holly Blackbird, un prezioso “originale di Shikoba Wolfe”');
 
--- Inserts for the main wandmakers table
-INSERT INTO `Olivanders`.`wandmakers`(`wandmaker_id`, `name`, `last_name`)
-VALUES
-(1, 'Garrick', 'Olivander'),
-(2, 'Salazar', 'Slytherin'),
-(3, 'Death', ''),
-(4, 'Antioch', 'Peverell'),
-(5, 'Isolt', 'Sayre'),
-(6, 'James', 'Steward'),
-(7, 'Arturo', 'Cephalopos'),
-(8, 'Mykew', 'Gregorovitch'),
-(9, 'Violetta', 'Beauvais'),
-(10, 'Shikoba', 'Wolfe');
 
 -- Inserts for user table.
 INSERT INTO `Olivanders`.`users`(`user_id`, `name`, `last_name`, `birth_date`, `email`, `password`) 
@@ -486,6 +500,64 @@ VALUES
 (50, 2, 'Tejo', 'Las varitas de tejo, raras y de oscura reputación, estaban relacionadas con poderes de vida y muerte. Aunque asociadas con maldiciones, favorecían a brujas y magos valientes, no necesariamente atraídos por las Artes Oscuras. Las varitas de tejo nunca elegían a los mediocres o tímidos.'),
 (50, 3, 'Tasso', 'Le bacchette di tasso, rare e di reputazione oscura, erano legate ai poteri della vita e della morte. Sebbene associate a maledizioni, preferivano maghi o streghe coraggiosi, non necessariamente attratti dalle Arti Oscure. Le bacchette di tasso non sceglievano mai i mediocri o timidi.');
 
+
+
+-- Inserts for the wands table where are the non translatable columns
+INSERT INTO `Olivanders`.`wands`(`wand_id`, `wandmaker_id`, `wood_id`, `core_id`, `length`)
+VALUES
+(1, 1, 22, 2, 11), -- Harry potters
+(2, 1, 50, 2, 13), -- voldemort
+(3, 1, 47, 1, 10), -- Hermione
+(4, 2, 20, 2, 14),
+(5, 2, 2, 1, 11),
+(6, 2, 1, 3, 10),
+(7, 4, 49, 8, 9),
+(8, 4, 50, 9, 12),
+(9, 5, 1, 3, 11),
+(10, 5, 3, 6, 09),
+(11, 4, 23, 4, 11),
+(12, 1, 20, 2, 16),
+(13, 2, 17, 1, 12),
+(14, 3, 12, 9, 11),
+(15, 4, 9, 9, 11),
+(16, 3, 16, 5, 15), -- The elder wand
+(17, 2, 36, 2, 9),
+(18, 5, 4, 1, 12),
+(19, 1, 23, 6, 11),
+(20, 7, 6, 7, 15),
+(21, 3, 1, 4, 12),
+(22, 5, 6, 3, 19),
+(23, 1, 3, 2, 14),
+(24, 3, 12, 9 , 12),
+(25, 5, 26, 10, 16),
+(26, 6, 47, 20, 11),
+(27, 3, 34, 19, 10),
+(28, 1, 31, 16, 14),
+(29, 1, 29, 11, 16),
+(30, 7, 39, 14, 12),
+(31, 8, 32, 17, 15),
+(32, 8, 41, 15, 12),
+(33, 9, 29, 16, 9),
+(34, 7, 9, 12, 8),
+(35, 6, 5, 15, 12),
+(36, 9 , 10, 17, 10),
+(37, 1, 12, 12, 11),
+(38, 10, 5, 12, 9),
+(39, 7, 19, 18, 8),
+(40, 8 , 33, 12, 10),
+(41, 9 , 36, 21, 14),
+(42, 10, 17, 12, 13),
+(43, 6, 12, 11, 11),
+(44, 8, 1, 4, 12),
+(45, 10, 2, 1, 10),
+(46, 1, 3, 7, 12),
+(47, 7, 4, 13, 10),
+(48, 4, 5, 10, 11),
+(49, 2, 6, 9, 12),
+(50, 9, 7, 1, 14);
+
+
+
 -- Inserts for the wand_has_language table where are the translatable columns for the wand relationship.
 INSERT INTO `Olivanders`.`wand_has_language`(`language_id`, `wand_id`, `flexibility`, `name`, `description`)
 VALUES
@@ -689,62 +761,6 @@ VALUES
 (2, 50, 'Muy flexible', 'La Rama Soberana', 'Imponente y respetada, esta varita brilla en manos hábiles.'),
 (3, 50, 'Molto flessibile', 'Il Rametto Sovrano', 'Imponente e rispettata, questa bacchetta brilla in mani abili.');
 
-
-
--- Inserts for the wands table where are the non translatable columns
-INSERT INTO `Olivanders`.`wands`(`wand_id`, `wandmaker_id`, `wood_id`, `core_id`, `length`)
-VALUES
-(1, 1, 22, 2, 11), -- Harry potters
-(2, 1, 50, 2, 13), -- voldemort
-(3, 1, 47, 1, 10), -- Hermione
-(4, 2, 20, 2, 14),
-(5, 2, 2, 1, 11),
-(6, 2, 1, 3, 10),
-(7, 4, 49, 8, 9),
-(8, 4, 50, 9, 12),
-(9, 5, 1, 3, 11),
-(10, 5, 3, 6, 09),
-(11, 4, 23, 4, 11),
-(12, 1, 20, 2, 16),
-(13, 2, 17, 1, 12),
-(14, 3, 12, 9, 11),
-(15, 4, 9, 9, 11),
-(16, 3, 16, 5, 15), -- The elder wand
-(17, 2, 36, 2, 9),
-(18, 5, 4, 1, 12),
-(19, 1, 23, 6, 11),
-(20, 7, 6, 7, 15),
-(21, 3, 1, 4, 12),
-(22, 5, 6, 3, 19),
-(23, 1, 3, 2, 14),
-(24, 3, 12, 9 , 12),
-(25, 5, 26, 10, 16),
-(26, 6, 47, 20, 11),
-(27, 3, 34, 19, 10),
-(28, 1, 31, 16, 14),
-(29, 1, 29, 11, 16),
-(30, 7, 39, 14, 12),
-(31, 8, 32, 17, 15),
-(32, 8, 41, 15, 12),
-(33, 9, 29, 16, 9),
-(34, 7, 9, 12, 8),
-(35, 6, 5, 15, 12),
-(36, 9 , 10, 17, 10),
-(37, 1, 12, 12, 11),
-(38, 10, 5, 12, 9),
-(39, 7, 19, 18, 8),
-(40, 8 , 33, 12, 10),
-(41, 9 , 36, 21, 14),
-(42, 10, 17, 12, 13),
-(43, 6, 12, 11, 11),
-(44, 8, 1, 4, 12),
-(45, 10, 2, 1, 10),
-(46, 1, 3, 7, 12),
-(47, 7, 4, 13, 10),
-(48, 4, 5, 10, 11),
-(49, 2, 6, 9, 12),
-(50, 9, 7, 1, 14);
- 
 
 
 
