@@ -32,6 +32,7 @@ async function updateUser(id, data) {
 }
 
 async function createUser(name, last_name, birth_date, email, password) {
+  if(!name || !last_name || !birth_date || !email || !password) throw new error.MISSING_DATA();
 
   const user = await userModel.create({
     name,

@@ -12,8 +12,16 @@ class USER_LIST_NOT_AVAILABLE extends Error {
   }
 };
 
+class MISSING_DATA extends Error {
+  constructor() {
+    super("Missing required data for creating a new user.");
+    this.status = 500;
+  }
+};
+
 export const errors = {
   USER_NOT_FOUND,
   USER_LIST_NOT_AVAILABLE,
+  MISSING_DATA,
 };
 export default errors;

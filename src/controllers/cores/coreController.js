@@ -1,6 +1,7 @@
 import CoreTranslations from "../../models/coreModels/coreHasLanguage.js";
 import Core from "../../models/coreModels/wandHasCoreModel.js";
 import translate from "../../config/translate.js"
+import errors from "../../helpers/errors/coreErrors.js"
 
 async function getAllCores() {
   const cores = await CoreTranslations.findAll({
@@ -13,7 +14,7 @@ async function getAllCores() {
     raw: true,
   });
 
-  if (!cores) throw new Error("Cores not found");
+  if (!cores) throw new errors.CORE_LIST_NOT_FOUND;
 
   return cores;
 }
@@ -29,14 +30,14 @@ async function getCoreById(id) {
     ],
     raw: true,
   });
-  if (!core) throw new Error("Core not found");
+  if (!core) throw new errors.CORE_NOT_FOUND;
 
   return core;
 }
 
 async function deleteCore(id) {
   const core = await Core.findByPk(id);
-  if (!core) throw new Error("Core not found");
+  if (!core) throw new errors.CORE_NOT_FOUND;
 
   await core.destroy();
   return core;
@@ -44,7 +45,7 @@ async function deleteCore(id) {
 
 async function updateCore(id, updatedData) {
   const core = await Core.findByPk(id);
-  if (!core) throw new Error("Core not found");
+  if (!core) throw new errors.CORE_NOT_FOUND;
 
   // Translate the name and description fields from English to Spanish and Italian
   const { name, description } = updatedData;
@@ -69,7 +70,7 @@ async function updateCore(id, updatedData) {
     const coreTranslation = await CoreTranslations.findOne({
       where: { core_id: id, language_id: language.language_id },
     });
-      await coreTranslation.update(language);
+    await coreTranslation.update(language);
   }
 
   return core;
@@ -78,6 +79,7 @@ async function updateCore(id, updatedData) {
 async function createCore(newCoreData) {
   const { name, description, discover_date } = newCoreData;
 
+  if (!name || !description || !discover_date) throw new errors.MISSING_DATA;
   // Translate the name and description fields from English to Spanish and Italian
   const translations = await Promise.all([
     translate(name, "es"), // Translate to Spanish
@@ -90,6 +92,8 @@ async function createCore(newCoreData) {
   const core = await Core.create({
     discover_date,
   });
+
+  if(!core) throw new errors.CORE_NOT_FOUND;
 
   // Create the core translations in the CoreTranslations model for the supported languages
   const supportedLanguages = [

@@ -8,6 +8,7 @@ import CoreTranslations from "../../models/coreModels/coreHasLanguage.js";
 import Wood from "../../models/woodModels/wandHasWoodModel.js";
 import WoodTranslations from "../../models/woodModels/woodHasLanguage.js";
 import translate from "../../config/translate.js";
+import errors from "../../helpers/errors/wandErrors.js";
 
 setupAssociations();
 
@@ -43,7 +44,7 @@ async function getAllWands() {
       },
     ],
   });
-  if (!wands) throw new Error("No wands found");
+  if (!wands) throw new errors.WAND_LIST_NOT_AVAILABLE();
   return wands;
 }
 
@@ -80,13 +81,13 @@ async function getWandById(id) {
     ],
   });
 
-  if (!wand) throw new Error("No wands found");
+  if (!wand) throw new errors.WAND_NOT_FOUND;
   return wand;
 }
 
 async function deleteWand(id) {
   const wand = await Wand.findByPk(id);
-  if (!wand) throw new Error("Wand not found");
+  if (!wand) throw new errors.WAND_NOT_FOUND;
 
   await wand.destroy();
   return wand;
@@ -94,7 +95,7 @@ async function deleteWand(id) {
 
 async function updateWand(id, updatedData) {
   const wand = await Wand.findByPk(id);
-  if (!wand) throw new Error("Wand not found");
+  if (!wand) throw new errors.WAND_NOT_FOUND;
 
   // Translate the flexibility, name, and description from the wandHasLanguage model
   const { flexibility, name, description } = updatedData;
@@ -146,6 +147,9 @@ async function createWand(newWandData) {
     name,
     description,
   } = newWandData;
+  if(!wandmaker_id || !wood_id || !core_id || !length ||!flexibility || !name || !description){
+    throw new errors.MISSING_DATA;
+  }
 
   //translate the flexibility, name and description in the Wand
   const translations = await Promise.all([
