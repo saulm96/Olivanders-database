@@ -1,6 +1,7 @@
 import WoodTranslations from "../../models/woodModels/woodHasLanguage.js";
 import Wood from "../../models/woodModels/wandHasWoodModel.js";
 import translate from "../../config/translate.js";
+import errors from "../../helpers/errors/woodErrors.js"
 
 async function getAllWoods() {
   const woods = await WoodTranslations.findAll({
@@ -13,7 +14,7 @@ async function getAllWoods() {
     raw: true,
   });
 
-  if (!woods) throw new Error("Woods not found");
+  if (!woods) throw new errors.WOOD_LIST_NOT_AVAILABLE;
 
   return woods;
 }
@@ -29,13 +30,13 @@ async function getWoodById(id) {
     ],
     raw: true,
   });
-  if (!wood) throw new Error("Wood not found");
+  if (!wood) throw new errors.WOOD_NOT_FOUND;
 
   return wood;
 }
 async function deleteWood(id) {
   const wood = await Wood.findByPk(id);
-  if (!wood) throw new Error("Wood not found");
+  if (!wood) throw new errors.WOOD_NOT_FOUND;
 
   await wood.destroy();
 
@@ -45,7 +46,7 @@ async function deleteWood(id) {
 
 async function updateWood(id, updatedData) {
   const core = await Wood.findByPk(id);
-  if (!core) throw new Error("Wood not found");
+  if (!core) throw new errors.WOOD_NOT_FOUND;
 
   //translate the name and description fields from English to Spanish and Italian
   const { name, description } = updatedData;
@@ -77,6 +78,7 @@ async function updateWood(id, updatedData) {
 
 async function createWood(newWoodData) {
   const { name, description, discover_date } = newWoodData;
+  if(!name || !description || !discover_date) throw new errors.MISSING_DATA();
 
   const translations = await Promise.all([
     translate(name, "es"), // Translate to Spanish

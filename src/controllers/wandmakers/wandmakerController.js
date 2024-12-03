@@ -1,6 +1,7 @@
 import Wandmaker from "../../models/wandmakersModels/wandmakerModel.js";
 import wandmakerTranslations from "../../models/wandmakersModels/wandmakerHasLanguage.js";
 import translate from "../../config/translate.js"
+import errors from "../../helpers/errors/wandmakerErrors.js"
 async function getAllWandmakers() {
   const wandmakers = await wandmakerTranslations.findAll({
     include: [
@@ -10,7 +11,7 @@ async function getAllWandmakers() {
       },
     ],
   });
-  if (!wandmakers) throw new Error("No wandmaker list found");
+  if (!wandmakers) throw new errors.WANDMAKER_LIST_NOT_AVAILABLE;
   return wandmakers;
 }
 
@@ -25,14 +26,14 @@ async function getWandmakerById(id) {
     ],
   });
 
-  if (!wandmaker) throw new Error("Wanmaker not found");
+  if (!wandmaker) throw new errors.WANDMAKER_NOT_FOUND;
 
   return wandmaker;
 }
 
 async function deleteWandmaker(id) {
   const wandmaker = await wandmakerTranslations.findByPk(id);
-  if (!wandmaker) throw new Error("Wandmaker not found");
+  if (!wandmaker) throw new errors.WANDMAKER_NOT_FOUND;
 
   await wandmaker.destroy();
 
@@ -42,7 +43,7 @@ async function deleteWandmaker(id) {
 
 async function updateWandmaker(id, updatedData) {
   const wandmaker = await Wandmaker.findByPk(id);
-  if (!wandmaker) throw new Error("Wandmaker not found");
+  if (!wandmaker) throw new errors.WANDMAKER_NOT_FOUND;
 
   //translate the specialty field from English to Spanish and Italian
   const { specialty } = updatedData;
@@ -73,7 +74,7 @@ async function updateWandmaker(id, updatedData) {
 
 async function createWandmaker(newWandmakerData) {
   const { name, last_name, specialty } = newWandmakerData;
-
+  if(!name || !last_name) throw new errors.MISSING_DATA;
   //translate the specialty field from English to Spanish and Italian
   const translations = await Promise.all([
     translate(specialty, "es"), // Translate to Spanish
