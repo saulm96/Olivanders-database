@@ -25,10 +25,12 @@ async function getWandmakerById(req, res) {
 }
 async function deleteWandmaker(req, res) {
   try {
-    const deletedWandmaker = await wandmakerController.deleteWandmaker(req.params.id);
+    const deletedWandmaker = await wandmakerController.deleteWandmaker(
+      req.params.id
+    );
     res.json(deletedWandmaker);
   } catch (error) {
-    error.status? res.status(error.status) : res.status(500);
+    error.status ? res.status(error.status) : res.status(500);
     res.json({ error: error.message });
   }
 }
@@ -44,7 +46,19 @@ async function updateWandmaker(req, res) {
 
     res.json(cleanWandmaker);
   } catch (error) {
-    error.status? res.status(error.status) : res.status(500);
+    error.status ? res.status(error.status) : res.status(500);
+    res.json({ error: error.message });
+  }
+}
+
+async function createWandmaker(req, res) {
+  try {
+    const newWandmakerData = req.body;
+
+    const wandmaker = await wandmakerController.createWandmaker(newWandmakerData);
+    res.json(wandmaker);
+  } catch (error) {
+    error.status ? res.status(error.status) : res.status(500);
     res.json({ error: error.message });
   }
 }
@@ -54,6 +68,7 @@ export const functions = {
   getWandmakerById,
   deleteWandmaker,
   updateWandmaker,
+  createWandmaker,
 };
 
 export default functions;

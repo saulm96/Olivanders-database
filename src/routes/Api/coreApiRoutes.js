@@ -8,6 +8,8 @@ router.get("/:id", coreApiControllers.getCoreById);
 
 router.put("/:id", coreApiControllers.updateCore);
 
+router.post("/new", coreApiControllers.createCore);
+
 router.delete("/:id", coreApiControllers.deleteCore);
 
 export default router;

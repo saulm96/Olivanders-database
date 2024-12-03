@@ -47,12 +47,24 @@ async function updateWood(req, res) {
     }
 }
 
+async function createWood(req, res) {
+    try {
+        const newWoodData = req.body;
+        const wood = await woodController.createWood(newWoodData);
+        res.json(wood);
+    } catch (error) {
+        error.status? res.status(error.status) : res.status(500);
+        res.json({ error: error.message });
+    }
+}
+
 
 export const functions = {
     getAllWoods,
     getWoodById,
     deleteWood,
     updateWood,
+    createWood,
 };
 
 export default functions;
