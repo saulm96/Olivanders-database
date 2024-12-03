@@ -3,7 +3,7 @@ import apiRouter from './Api/apiRouter.js';
 
 const router = Router();
 
-router.use("/api", apiRouter); //For english content
+router.use("/api", apiRouter); 
 
 export default router;
 
