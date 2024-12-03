@@ -50,11 +50,25 @@ async function updateCore(req, res) {
     }
 }
 
+async function createCore(req, res) {
+    try {
+        const newCoreData = req.body;
+
+        const core = await coreController.createCore(newCoreData);
+        res.json(core);
+    } catch (error) {
+        error.status? res.status(error.status) : res.status(500);
+        res.json({ error: error.message });
+    }
+}
+
+
 export const functions = {
     getAllCores,
     getCoreById,
     deleteCore,
     updateCore,
+    createCore,
 };
 
 export default functions;
