@@ -1,34 +1,44 @@
-function cleanWandmakerData(data) {
-    const keyOrders = [
-      'language_id',
-      'wandmaker_id',
-      'name',
-      'last_name',
-      'specialty',
-    ]
-    return data.map(data =>{
+  function wandmakerCleaner(wandmakersData) {
+    const keyOrder = [
+      "language_id",
+      "wandmaker_id",
+      "name",
+      "last_name",
+      "specialty",
+    ];
 
-      const cleanData= {};
-      keyOrders.forEach(key => {
-        
-        let ogKey;
+    // Convertir el input a un array si no lo es
+    const wandmakersArray = Array.isArray(wandmakersData)
+      ? wandmakersData
+      : [wandmakersData];
 
-        switch(key){
-          case 'name':
-            ogKey = 'wandmaker.name';
+    const cleanedWandmakers = wandmakersArray.map((wandmaker) => {
+      const cleanWandmaker = {};
+      keyOrder.forEach((key) => {
+        let value;
+
+        switch (key) {
+          case "name":
+            value = wandmaker.wandmaker?.name;
             break;
-          case 'last_name':
-            ogKey = 'wandmaker.last_name';
+          case "last_name":
+            value = wandmaker.wandmaker?.last_name;
             break;
           default:
-            ogKey = key;
+            value = wandmaker[key];
         }
 
-        if(ogKey in data){
-          cleanData[key] = data[ogKey];
+        if (value !== undefined) {
+          cleanWandmaker[key] = value;
         }
       });
-      return cleanData;
-    })
+      return cleanWandmaker;
+    });
+
+    return Array.isArray(wandmakersData)
+      ? cleanedWandmakers
+      : cleanedWandmakers[0];
   }
-export default cleanWandmakerData;
+
+
+export default wandmakerCleaner;

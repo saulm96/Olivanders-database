@@ -1,22 +1,16 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/sequelize.js";
+import Wood from "./wandHasWoodModel.js"
+import Language from "../languageModels/languageModel.js";
 
-const WoodModel = sequelize.define("wood_has_language", {
+const WoodTranslations = sequelize.define("wood_has_language", {
   language_id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
-    references: {
-      model: "Language",
-      key: "language_id",
-    },
   },
     wood_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
-      references: {
-        model: "Wood",
-        key: "wood_id",
-      },
     },
   name: {
     type: DataTypes.STRING(45),
@@ -28,4 +22,8 @@ const WoodModel = sequelize.define("wood_has_language", {
   },
 });
 
-export default WoodModel;
+
+WoodTranslations.belongsTo(Language, { foreignKey: "language_id", through: "wood_has_language" }); 
+WoodTranslations.belongsTo(Wood, { foreignKey: "wood_id" , through: "wood_has_language"  });
+
+export default WoodTranslations;

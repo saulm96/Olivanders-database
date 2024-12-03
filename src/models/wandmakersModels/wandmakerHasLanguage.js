@@ -20,6 +20,6 @@ const wandmakerTranslations = sequelize.define('wandmaker_has_language', {
 });
 
 
-wandmakerTranslations.belongsTo(Wandmaker, {foreignKey: 'wandmaker_id', through: 'wandmaker_has_language'});
-wandmakerTranslations.belongsTo(Language, {foreignKey: 'language_id', through: 'wandmaker_has_language'});
+wandmakerTranslations.belongsTo(Wandmaker, {foreignKey: 'wandmaker_id' , through: 'wandmaker_has_language'});
+wandmakerTranslations.belongsTo(Language, {foreignKey: 'language_id', through: 'wandmaker_has_language'  });
 export default wandmakerTranslations;

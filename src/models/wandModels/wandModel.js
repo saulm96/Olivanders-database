@@ -26,3 +26,4 @@ const Wand = sequelize.define("wands", {
 });
 
 export default Wand;
+

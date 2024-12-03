@@ -6,4 +6,9 @@ const router = Router();
 router.get('/list', woodApiController.getAllWoods);
 router.get('/:id', woodApiController.getWoodById);
 
+router.put('/:id', woodApiController.updateWood);
+
+
+router.delete('/:id', woodApiController.deleteWood);
+
 export default router;

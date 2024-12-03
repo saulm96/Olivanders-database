@@ -23,46 +23,19 @@ Fixed the relations of the sequalize and made all the basics functions for the C
 2024/11/30
 Reorganized the json response. Also created a new folder called cleaner to clean and order all the jsons.
 
+###0.1
+For now the API can show you four different endpoints:
+    - Users ("user/list" with the list of all users in the database)
+            ("user/ID" replace ID with the user id you are looking for)
 
+    -wands  ("wand/list" for the list of all wands in the database) 
+            ("wand/ID" replace ID with the wand id you are looking for)
 
+    -cores  ("core/list" for the list of all existing wand cores in the database)
+            ("core/ID" replace ID with the wand core id you are looking for")
 
-To do list:
-1.
-Implement authentication and authorization:
-Create a user registration system.
-Implement login with JWT.
-Create middleware to protect routes requiring authentication.
-2.
-Expand API functionality:
-Implement endpoints to search wands by core and wood.
-Create endpoints to search for wands by character name.
-Develop endpoints to obtain information on all existing wands.
-3.
-Implement automatic CRUD:
-Create endpoints to add new characters, wands, and transfers.
-Implement logic to update the database in real time.
-4.
-Integrate external API for real-time translations:
-Research and select a suitable translation API.
-Implement the logic to perform real-time translations.
-5.
-Improve error handling and validation:
-Create middleware to validate input data.
-Implement a more robust error handling system.
-6.
-Document the API:
-Create detailed documentation of all endpoints.
-Use tools such as Swagger to generate interactive documentation.
-7.
-Implement tests:
-Write unit tests for models and controllers.
-Create integration tests for API endpoints.
-8.
-Optimize performance:
-Implement caching to reduce the load on the database.
-Optimize database queries.
-9.
-Implement logging and monitoring:
-Set up a logging system to track errors and activity.
-Implement
+    -woods  ("wood/list" for the list of all existing wand woods in the database)
+            ("wand/ID" replace ID with the wood id you are looking for")
 
+    -wandmakers ("wandmaker/list" for the list of all existing wandmakers in the database)
+                ("wandmaker/ID" replace ID with the wandmaker id you are looking for)

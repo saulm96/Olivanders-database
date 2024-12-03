@@ -6,4 +6,8 @@ const router = Router();
 router.get('/list', coreApiControllers.getAllCores);
 router.get("/:id", coreApiControllers.getCoreById);
 
+router.put("/:id", coreApiControllers.updateCore);
+
+router.delete("/:id", coreApiControllers.deleteCore);
+
 export default router;
