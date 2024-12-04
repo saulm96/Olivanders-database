@@ -19,6 +19,7 @@ async function getAllWoods() {
   return woods;
 }
 
+
 async function getWoodById(id) {
   const wood = await WoodTranslations.findAll({
     where: { wood_id: id },

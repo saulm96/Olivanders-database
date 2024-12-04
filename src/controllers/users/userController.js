@@ -1,5 +1,7 @@
 import userModel from "../../models/userModel.js";
 import error from "../../helpers/errors/userErrors.js";
+import {hashPassword} from "../../config/bcryptjs.js";
+
 
 async function getallUsers() {
   const users = await userModel.findAll();
@@ -30,23 +32,35 @@ async function updateUser(id, data) {
   await user.update(data);
   return user;
 }
+async function getUserByEmail(email) {
+  const user = await userModel.findOne({
+     where: 
+     { email: email } });
 
+  return user;
+}
 async function createUser(name, last_name, birth_date, email, password) {
   if(!name || !last_name || !birth_date || !email || !password) throw new error.MISSING_DATA();
 
-  const user = await userModel.create({
+  const oldUser = await getUserByEmail(email);
+  if(oldUser) throw new error.EMAIL_ALREADY_IN_USE();
+
+  const hash = await hashPassword(password);
+
+  const newUser = await userModel.create({
     name,
     last_name,
     birth_date,
     email,
-    password,
+    password: hash,
   });
 
-  return user;
+  return newUser;
 }
 export const functions = {
   getallUsers,
   getUserById,
+  getUserByEmail,
   deleteUser,
   updateUser,
   createUser,
