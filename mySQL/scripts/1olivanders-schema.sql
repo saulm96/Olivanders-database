@@ -98,6 +98,7 @@ DROP TABLE IF EXISTS `Olivanders`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `Olivanders`.`users` (
   `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role` ENUM("user", "admin") NULL DEFAULT 'user',
   `name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NULL DEFAULT NULL,
   `birth_date` VARCHAR(20) NOT NULL,

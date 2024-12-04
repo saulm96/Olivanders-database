@@ -78,58 +78,10 @@ VALUES
 
 
 -- Inserts for user table.
-INSERT INTO `Olivanders`.`users`(`user_id`, `name`, `last_name`, `birth_date`, `email`, `password`) 
+INSERT INTO `Olivanders`.`users`(`user_id`,`role`, `name`, `last_name`, `birth_date`, `email`, `password`) 
 VALUES 
-(1, 'Albus', 'Dumbledore', '1881-08-30', 'dumbledor@hogwarts.magic', 'voldididntkillme'), 
-(2, 'Tom', 'Marvolo Riddle', '1926-12-31', 'He-Who-Must-Not-Be-Named@deatheaters.com', 'harrykilledme'), 
-(3, 'Harry', 'Potter', '1980-07-31', 'thechildwholived@hogwarts.com', 'ikilledvoldi'),
-(4, 'Hermione', 'Granger', '1979-09-19', 'bookwormwizard@hogwarts.magic', 'ronweasleysbff'),
-(5, 'Ron', 'Weasley', '1980-03-01', 'gingermagic@burrow.wizard', 'hermioneislove'),
-(6, 'Ginny', 'Weasley', '1981-08-11', 'quidditchqueen@weasleys.com', 'harryspotterswife'),
-(7, 'Draco', 'Malfoy', '1980-06-05', 'pure-blood-prince@slytherin.magic', 'fatherknowsbest'),
-(8, 'Severus', 'Snape', '1960-01-09', 'always-potions@hogwarts.magic', 'lilysalways'),
-(9, 'Sirius', 'Black', '1959-11-03', 'escaped-prisoner@azkaban.com', 'moonypadsfootsprongs'),
-(10, 'Remus', 'Lupin', '1960-03-10', 'werewolf-professor@hogwarts.magic', 'fullmoonproblems'),
-(11, 'Neville', 'Longbottom', '1980-07-30', 'herbology-hero@gryffindor.com', 'grandmasproud'),
-(12, 'Luna', 'Lovegood', '1981-02-13', 'radish-earrings@lovegood.magic', 'believeinnaargles'),
-(13, 'Fred', 'Weasley', '1978-04-01', 'pranking-genius1@weasleyswizardwheezes.com', 'georgeismy-twin'),
-(14, 'George', 'Weasley', '1978-04-01', 'pranking-genius2@weasleyswizardwheezes.com', 'fredismy-twin'),
-(15, 'Bellatrix', 'Lestrange', '1951-12-15', 'crazy-dark-witch@deatheaters.com', 'voldemortsloyalist'),
-(16, 'Cedric', 'Diggory', '1977-10-15', 'triwizard-champion@hufflepuff.magic', 'fairplayalways'),
-(17, 'Cho', 'Chang', '1979-02-14', 'ravenclaw-seeker@hogwarts.com', 'harrysFirstkiss'),
-(18, 'Minerva', 'McGonagall', '1935-10-04', 'strict-transfiguration@hogwarts.magic', 'gryffindorforever'),
-(19, 'Rubeus', 'Hagrid', '1928-12-06', 'groundskeeper@hogwarts.magic', 'iwantadragon'),
-(20, 'Dobby', 'Elf', '1970-01-01', 'free-elf@malfoymanor.com', 'harrypottersaved-me'),
-(21, 'Ernie', 'Macmillan', '1980-06-15', 'hufflepuff-prefect@hogwarts.magic', 'loyalfriend'),
-(22, 'Dean', 'Thomas', '1980-08-01', 'gryffindor-artist@hogwarts.com', 'ginnyswboyfriend'),
-(23, 'Seamus', 'Finnigan', '1980-02-28', 'explosions-expert@hogwarts.magic', 'wingardiumleviosa'),
-(24, 'Padma', 'Patil', '1979-09-15', 'ravenclaw-smarty@hogwarts.com', 'twinningwithparvati'),
-(25, 'Parvati', 'Patil', '1979-09-15', 'gryffindor-fashionista@hogwarts.magic', 'padmasister'),
-(26, 'Oliver', 'Wood', '1976-11-20', 'quidditch-obsessed@hogwarts.com', 'winnerwithgryffindor'),
-(27, 'Angelina', 'Johnson', '1977-10-15', 'quidditch-captain@gryffindor.magic', 'fredweasleyslove'),
-(28, 'Hannah', 'Abbott', '1980-05-20', 'hufflepuff-sweetheart@hogwarts.com', 'neville-loves-me'),
-(29, 'Susan', 'Bones', '1980-04-10', 'fair-and-just@hufflepuff.magic', 'auntamiasniece'),
-(30, 'Marcus', 'Flint', '1975-08-15', 'slytherin-brute@hogwarts.com', 'quidditchisfirst'),
-(31, 'Vincent', 'Crabbe', '1980-01-14', 'dracoscrony1@slytherin.magic', 'goyleismybestie'),
-(32, 'Gregory', 'Goyle', '1980-02-20', 'dracoscrony2@slytherin.com', 'crabbemybestfriend'),
-(33, 'Blaise', 'Zabini', '1980-03-05', 'smooth-slytherin@hogwarts.magic', 'purebloodandproud'),
-(34, 'Katie', 'Bell', '1978-09-25', 'quidditch-chaser@gryffindor.com', 'angelinasbestfriend'),
-(35, 'Lee', 'Jordan', '1978-11-05', 'quidditch-commentator@hogwarts.magic', 'weasleytwinsbuddy'),
-(36, 'Percy', 'Weasley', '1976-08-22', 'ministry-ambitious@weasley.com', 'prefectknowsbest'),
-(37, 'Bill', 'Weasley', '1970-11-29', 'curse-breaker@gringotts.magic', 'fleurdelacourwife'),
-(38, 'Charlie', 'Weasley', '1972-12-12', 'dragon-tamer@romania.com', 'weasleyfamily-rocks'),
-(39, 'Lavender', 'Brown', '1979-10-10', 'ron-is-mine@hogwarts.magic', 'wonwonlover'),
-(40, 'Pansy', 'Parkinson', '1979-11-15', 'dracosboyfriend@slytherin.com', 'malfoysfuturewife'),
-(41, 'Alicia', 'Spinnet', '1977-09-12', 'quidditch-trio@gryffindor.magic', 'kaatiessister'),
-(42, 'Colin', 'Creevey', '1981-08-20', 'harry-potter-fan@hogwarts.com', 'cameraobsessed'),
-(43, 'Dennis', 'Creevey', '1982-09-15', 'harrypotter-admirer@hogwarts.magic', 'colinsmartyr'),
-(44, 'Fenrir', 'Greyback', '1940-06-10', 'werewolf-terror@deatheaters.com', 'bitingislife'),
-(45, 'Peter', 'Pettigrew', '1960-03-15', 'rat-betrayer@marauders.magic', 'voldemortsservant'),
-(46, 'Nymphadora', 'Tonks', '1973-02-05', 'metamorphmagus@aurors.com', 'remusluvinme'),
-(47, 'Narcissa', 'Malfoy', '1955-01-20', 'blackfamily-royalty@malfoymanor.magic', 'dracosmom'),
-(48, 'Lucius', 'Malfoy', '1954-06-25', 'pure-blood-aristocrat@deatheaters.com', 'voldemortsfollow'),
-(49, 'Andromeda', 'Tonks', '1953-07-14', 'blacksheep-family@hogwarts.magic', 'tedloveswme'),
-(50, 'Ted', 'Tonks', '1952-09-18', 'muggle-born-wizard@hogwarts.com', 'andromedaislove');
+(1, 'admin', 'Garrick', 'Olivander', '1952-09-18', 'wand-master@diagon-alley.com', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a'),
+(2,  'user', 'Harry', 'Potter', '1980-10-31', 'the-boy-who-lived@hogwarts.magic', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a');
 
 -- Inserts for wand_has_core table, where are the non translatable columns for the wand cores table
 INSERT INTO `Olivanders`.`wand_has_core`(`core_id`, `discover_date`)
