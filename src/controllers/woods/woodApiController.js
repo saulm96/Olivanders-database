@@ -3,7 +3,7 @@ import cleanWoodData from "../../helpers/JSONcleaner/woodCleaner.js"
 
 async function getAllWoods(req, res) {
     try {
-        const woods = await woodController.getAllWoods();
+        const woods = await woodController.getAllWoods(req.user.language_id);
         const cleanedWood = cleanWoodData(woods);
         res.json(cleanedWood);
 
@@ -16,7 +16,7 @@ async function getAllWoods(req, res) {
 
 async function getWoodById(req, res) {
     try {
-        const wood = await woodController.getWoodById(req.params.id);
+        const wood = await woodController.getWoodById(req.params.id, req.user.language_id);
         const cleanedWood = cleanWoodData(wood);
 
         res.json(cleanedWood);

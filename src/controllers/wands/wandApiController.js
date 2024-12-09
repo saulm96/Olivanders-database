@@ -3,7 +3,7 @@ import cleanWandData from "../../helpers/JSONcleaner/wandCleaner.js";
 
 async function getAllWands(req, res) {
   try {
-    const wands = await wandController.getAllWands();
+    const wands = await wandController.getAllWands(req.user.language_id);
     const formatedWands = cleanWandData(wands);
 
     res.json(formatedWands);
@@ -15,7 +15,7 @@ async function getAllWands(req, res) {
 
 async function getWandById(req, res) {
   try {
-    const wand = await wandController.getWandById(req.params.id);
+    const wand = await wandController.getWandById(req.params.id, req.user.language_id);
     const cleanedWand = cleanWandData(wand);
 
     res.json(cleanedWand); //

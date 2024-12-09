@@ -1,10 +1,67 @@
 import WoodTranslations from "../../models/woodModels/woodHasLanguage.js";
 import Wood from "../../models/woodModels/wandHasWoodModel.js";
+import Language from "../../models/languageModels/languageModel.js"
 import translate from "../../config/translate.js";
 import errors from "../../helpers/errors/woodErrors.js"
 
-async function getAllWoods() {
-  const woods = await WoodTranslations.findAll({
+async function getAllWoods(language_id){
+  const woodInEnglish = await WoodTranslations.findAll({
+    where: { language_id: 1 },
+    include: [
+      {
+        model: Wood,
+        attributes: ["discover_date"],
+      },
+    ],
+    raw: true,
+  })
+
+  //Fetch the iso code of the specified language
+  const usersIso = await Language.findOne({
+    where: { language_id },
+    attributes: ["iso_code"],
+  })
+
+  //Translate all woods in the specified language
+  for(let i = 0; i < woodInEnglish.length; i++){
+    const {wood_id, name, description} = woodInEnglish[i];
+
+    //Check if the wood is already translated in the specified language
+    const woodTranslation = await WoodTranslations.findOne({
+      where: { wood_id, language_id },
+    });
+
+    if(!woodTranslation){
+      // If the wood is not translated, create a new translation
+      const newWood = await WoodTranslations.create({
+        language_id: language_id,
+        wood_id: wood_id,
+        name: await translate(name, usersIso.iso_code),
+        description: await translate(description, usersIso.iso_code),
+      });
+    }
+  }
+  // Fetch all woods in the specified language
+  const finalWoods = await WoodTranslations.findAll({
+    where: { language_id },
+    include: [
+      {
+        model: Wood,
+        attributes: ["discover_date"],
+      },
+    ],
+    raw: true,
+  })
+
+  return finalWoods;
+}
+
+async function getWoodById(id, language_id) {
+  const wood = await WoodTranslations.findOne({
+    where: {
+      wood_id: id,
+      language_id,
+    },
     include: [
       {
         model: Wood,
@@ -14,15 +71,27 @@ async function getAllWoods() {
     raw: true,
   });
 
-  if (!woods) throw new errors.WOOD_LIST_NOT_AVAILABLE;
+  if (!wood) {
+    const woodTranslation = await WoodTranslations.findOne({
+      where: { wood_id: id, language_id: 1 }});
 
-  return woods;
-}
+    const usersIso = await Language.findOne({
+      where: { language_id: language_id },
+      attributes: ["iso_code"],
+    });
+    const newWood = await WoodTranslations.create({
+      language_id: language_id,
+      wood_id: id,
+      name: await translate(woodTranslation.name, usersIso.iso_code),
+      description: await translate(woodTranslation.description, usersIso.iso_code),
+    });
+  }
 
-
-async function getWoodById(id) {
-  const wood = await WoodTranslations.findAll({
-    where: { wood_id: id },
+  const finalWood = await WoodTranslations.findOne({
+    where: {
+      wood_id: id,
+      language_id,
+    },
     include: [
       {
         model: Wood,
@@ -31,10 +100,12 @@ async function getWoodById(id) {
     ],
     raw: true,
   });
-  if (!wood) throw new errors.WOOD_NOT_FOUND;
 
-  return wood;
+
+  return finalWood;
+
 }
+
 async function deleteWood(id) {
   const wood = await Wood.findByPk(id);
   if (!wood) throw new errors.WOOD_NOT_FOUND;
@@ -46,63 +117,93 @@ async function deleteWood(id) {
 }
 
 async function updateWood(id, updatedData) {
-  const core = await Wood.findByPk(id);
-  if (!core) throw new errors.WOOD_NOT_FOUND;
+  const wood = await Wood.findByPk(id);
+  if (!wood) throw new errors.WOOD_NOT_FOUND;
 
-  //translate the name and description fields from English to Spanish and Italian
-  const { name, description } = updatedData;
-  const translations = await Promise.all([
-    translate(name, "es"), // Translate to Spanish
-    translate(name, "it"), // Translate to Italian
-    translate(description, "es"), // Translate to Spanish
-    translate(description, "it"), // Translate to Italian
-  ]);
+  // Fetch the supported languages from the database
+  const supportedLanguages = await Language.findAll({
+    attributes: ["language_id", "iso_code"],
+  });
 
-  //Update the wood data in the Wood model
-  await core.update(updatedData);
+  // Translate the name and description fields for each supported language
+  const translations = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      return {
+        name: await translate(updatedData.name, lang.iso_code),
+        description: await translate(updatedData.description, lang.iso_code),
+      };
+    })
+  );
 
-  //Update the wood translations in the WoodTranslations model for the supported languages
-  const supportedLanguages = [
-    { language_id: 1, name: name, description: description }, // English
-    { language_id: 2, name: translations[0], description: translations[2] }, // Spanish
-    { language_id: 3, name: translations[1], description: translations[3] }, // Italian
-  ];
+  // Update the core data in the Core model
+  await wood.update(updatedData);
 
-  for (const language of supportedLanguages) {
+  // Update the core translations in the CoreTranslations model for the supported languages
+  for (let i = 0; i < supportedLanguages.length; i++) {
+    const { language_id } = supportedLanguages[i];
+    const { name, description } = translations[i];
+
     const woodTranslation = await WoodTranslations.findOne({
-      where: { wood_id: id, language_id: language.language_id },
+      where: { wood_id: id, language_id },
     });
-    await woodTranslation.update(language);
+
+    if (woodTranslation) {
+      await woodTranslation.update({ name, description });
+    } else {
+      await WoodTranslations.create({
+        language_id,
+        wood_id: wood.wood_id,
+        name,
+        description,
+      });
+    }
+
   }
-  return core;
+  return wood;
 }
+
 
 async function createWood(newWoodData) {
   const { name, description, discover_date } = newWoodData;
-  if(!name || !description || !discover_date) throw new errors.MISSING_DATA();
 
-  const translations = await Promise.all([
-    translate(name, "es"), // Translate to Spanish
-    translate(name, "it"), // Translate to Italian
-    translate(description, "es"), // Translate to Spanish
-    translate(description, "it"), // Translate to Italian
-  ]);
+  if (!name || !description || !discover_date) throw new errors.MISSING_DATA;
 
-  // Create the wood in the Wood model
+  // Create the core in the Core model
   const wood = await Wood.create({
     discover_date,
   });
 
-  // Create the wood translations in the WoodTranslations model for the supported languages
-  const supportedLanguages = [
-    { language_id: 1, name, description }, // English
-    { language_id: 2, name: translations[0], description: translations[2] }, // Spanish
-    { language_id: 3, name: translations[1], description: translations[3] }, // Italian
-  ];
+  if (!wood) throw new errors.WOOD_NOT_FOUND;
 
-  for (const language of supportedLanguages) {
-    await WoodTranslations.create({ ...language, wood_id: wood.wood_id });
+  // Fetch the supported languages from the database
+  const supportedLanguages = await Language.findAll({
+    attributes: ["language_id", "iso_code"],
+  });
+
+  // Translate the name and description fields for each supported language
+  const translations = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      return {
+        name: await translate(name, lang.iso_code),
+        description: await translate(description, lang.iso_code),
+      };
+    })
+  );
+
+  // Create the core translations in the CoreTranslations model for each supported language
+  for (let i = 0; i < supportedLanguages.length; i++) {
+    const { language_id } = supportedLanguages[i];
+    const { name, description } = translations[i];
+
+    await WoodTranslations.create({
+      language_id,
+      wood_id: wood.wood_id,
+      name,
+      description,
+    });
   }
+
+  return wood;
 }
 
 export const functions = {

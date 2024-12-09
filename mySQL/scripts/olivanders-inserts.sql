@@ -78,10 +78,10 @@ VALUES
 
 
 -- Inserts for user table.
-INSERT INTO `Olivanders`.`users`(`user_id`,`role`, `name`, `last_name`, `birth_date`, `email`, `password`) 
+INSERT INTO `Olivanders`.`users`(`user_id`,`role`, `name`, `last_name`, `birth_date`, `email`, `password`, `language_id`) 
 VALUES 
-(1, 'admin', 'Garrick', 'Olivander', '1952-09-18', 'wand-master@diagon-alley.com', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a'),
-(2,  'user', 'Harry', 'Potter', '1980-10-31', 'the-boy-who-lived@hogwarts.magic', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a');
+(1, 'admin', 'Garrick', 'Olivander', '1952-09-18', 'wand-master@diagon-alley.com', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a', 1),
+(2,  'user', 'Harry', 'Potter', '1980-10-31', 'the-boy-who-lived@hogwarts.magic', '$2a$10$nDZr9EtcRnn65T5KpymGu.K9IYM2wrpl1K88eiRGsBM7qHswpVJ5a', 2);
 
 -- Inserts for wand_has_core table, where are the non translatable columns for the wand cores table
 INSERT INTO `Olivanders`.`wand_has_core`(`core_id`, `discover_date`)

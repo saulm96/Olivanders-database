@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import Language from "./languageModels/languageModel.js"
 import sequelize from "../config/sequelize.js"
 
 const User = sequelize.define("users", {
@@ -32,7 +33,12 @@ const User = sequelize.define("users", {
     password:{
         type: DataTypes.STRING(100),
         allowNull: false,
-    }
+    },
+    language_id:{
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+    },    
 })
 
+User.belongsTo(Language, { foreignKey: "language_id" });
 export default User;
