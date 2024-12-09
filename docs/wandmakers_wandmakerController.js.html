@@ -1,4 +1,32 @@
-import Wandmaker from "../../models/wandmakersModels/wandmakerModel.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: wandmakers/wandmakerController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: wandmakers/wandmakerController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Wandmaker from "../../models/wandmakersModels/wandmakerModel.js";
 import wandmakerTranslations from "../../models/wandmakersModels/wandmakerHasLanguage.js";
 import Language from "../../models/languageModels/languageModel.js"
 import translate from "../../config/translate.js"
@@ -10,7 +38,7 @@ import errors from "../../helpers/errors/wandmakerErrors.js"
  * the specialty is translated and stored.
  *
  * @param {number} language_id - The ID of the language in which to retrieve wandmakers.
- * @returns {Promise<Array>} A promise that resolves to an array of wandmakers
+ * @returns {Promise&lt;Array>} A promise that resolves to an array of wandmakers
  *                           with their names, last names, and specialties 
  *                           in the specified language.
  */
@@ -32,7 +60,7 @@ async function getAllWandmakers(language_id) {
   attributes: ["iso_code"],
  })
  //Translate all wandmakers in the specified language
- for(let i= 0; i < wandmakersInEnglish.length; i++){
+ for(let i= 0; i &lt; wandmakersInEnglish.length; i++){
   const{ wandmaker_id, specialty} = wandmakersInEnglish[i];
   
   //Check if the wandmaker is already translated in the specified language
@@ -70,7 +98,7 @@ async function getAllWandmakers(language_id) {
  *
  * @param {number} id - The ID of the wandmaker to retrieve.
  * @param {number} language_id - The ID of the language in which to retrieve the wandmaker.
- * @returns {Promise<Object>} A promise that resolves to an object containing the wandmaker's name, last name, and specialty
+ * @returns {Promise&lt;Object>} A promise that resolves to an object containing the wandmaker's name, last name, and specialty
  *                           in the specified language.
  */
 async function getWandmakerById(id, language_id) {
@@ -122,7 +150,7 @@ async function getWandmakerById(id, language_id) {
  * Throws WANDMAKER_NOT_FOUND if the wandmaker is not found.
  *
  * @param {number} id - The ID of the wandmaker to delete.
- * @returns {Promise<Object>} A promise that resolves to the deleted wandmaker.
+ * @returns {Promise&lt;Object>} A promise that resolves to the deleted wandmaker.
  */
 async function deleteWandmaker(id) {
   const wandmaker = await wandmakerTranslations.findByPk(id);
@@ -140,7 +168,7 @@ async function deleteWandmaker(id) {
  *
  * @param {number} id - The ID of the wandmaker to update.
  * @param {Object} updatedData - The updated data for the wandmaker.
- * @returns {Promise<Object>} A promise that resolves to the updated wandmaker.
+ * @returns {Promise&lt;Object>} A promise that resolves to the updated wandmaker.
  */
 async function updateWandmaker(id, updatedData) {
   const wandmaker = await Wandmaker.findByPk(id);
@@ -164,7 +192,7 @@ async function updateWandmaker(id, updatedData) {
   await wandmaker.update(updatedData);
 
   // Update the wandmaker translations in the CoreTranslations model for the supported languages
-  for (let i = 0; i < supportedLanguages.length; i++) {
+  for (let i = 0; i &lt; supportedLanguages.length; i++) {
     const { language_id } = supportedLanguages[i];
     const { specialty } = translations[i];
 
@@ -192,7 +220,7 @@ async function updateWandmaker(id, updatedData) {
    * @param {string} newWandmakerData.name The name of the wandmaker.
    * @param {string} newWandmakerData.last_name The last name of the wandmaker.
    * @param {string} newWandmakerData.specialty The specialty of the wandmaker.
-   * @returns {Promise<Object>} A promise that resolves to the newly created wandmaker.
+   * @returns {Promise&lt;Object>} A promise that resolves to the newly created wandmaker.
    * @throws {Error} If the wandmaker could not be created.
    */
 async function createWandmaker(newWandmakerData) {
@@ -223,7 +251,7 @@ async function createWandmaker(newWandmakerData) {
   );
 
   // Create the core translations in the CoreTranslations model for each supported language
-  for (let i = 0; i < supportedLanguages.length; i++) {
+  for (let i = 0; i &lt; supportedLanguages.length; i++) {
     const { language_id } = supportedLanguages[i];
     const { specialty } = translations[i];
 
@@ -246,3 +274,26 @@ export const functions = {
   createWandmaker,
 };
 export default functions;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createCore">createCore</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#createWand">createWand</a></li><li><a href="global.html#createWandmaker">createWandmaker</a></li><li><a href="global.html#createWood">createWood</a></li><li><a href="global.html#deleteCore">deleteCore</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#deleteWand">deleteWand</a></li><li><a href="global.html#deleteWandmaker">deleteWandmaker</a></li><li><a href="global.html#deleteWood">deleteWood</a></li><li><a href="global.html#getAllWandmakers">getAllWandmakers</a></li><li><a href="global.html#getAllWands">getAllWands</a></li><li><a href="global.html#getAllWoods">getAllWoods</a></li><li><a href="global.html#getCoreById">getCoreById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserLanguage">getUserLanguage</a></li><li><a href="global.html#getWandById">getWandById</a></li><li><a href="global.html#getWandmakerById">getWandmakerById</a></li><li><a href="global.html#getWoodById">getWoodById</a></li><li><a href="global.html#getallUsers">getallUsers</a></li><li><a href="global.html#updateCore">updateCore</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateWand">updateWand</a></li><li><a href="global.html#updateWandmaker">updateWandmaker</a></li><li><a href="global.html#updateWood">updateWood</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 04:26:01 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "HarryPotter.-APIrest",
+      "description": "Swagger documentation generated from Postman collection",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3001"
+      }
+    ],
+    "paths": {
+      "/login": {
+        "post": {
+          "summary": "api-login",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "email": "wand-master@diagon-alley.com",
+                    "password": "12345"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "summary": "api-register",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "saul",
+                    "last_name": "mora",
+                    "birth_date": "1996/07/10",
+                    "email": "saul@gmail.com",
+                    "password": "12345",
+                    "confirmedPassword": "12345"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/user/list": {
+        "get": {
+          "summary": "user-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/user/2": {
+        "get": {
+          "summary": "user-id",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "delete": {
+          "summary": "user-delete",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/user/1": {
+        "put": {
+          "summary": "user-update",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "Saul",
+                    "last_name": "Dumbledore",
+                    "language_id": 4
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/user/new": {
+        "post": {
+          "summary": "user-create",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "saul",
+                    "last_name": "mora",
+                    "birth_date": "1996/07/10",
+                    "email": "saul@gmail.com",
+                    "password": "12345",
+                    "language_id": 4
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wandmaker/list": {
+        "get": {
+          "summary": "wandmaker-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/wandmaker/2": {
+        "get": {
+          "summary": "wandmaker-id",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/wandmaker/1": {
+        "delete": {
+          "summary": "wandmaker-delete",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "put": {
+          "summary": "wandmaker-update",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "saul",
+                    "last_name": "mora",
+                    "specialty": "It is a beautiful night, we are looking for something nice to do"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wandmaker/new": {
+        "post": {
+          "summary": "wandmaker-create",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "Yerao",
+                    "last_name": "Da Silva",
+                    "specialty": "Very famous spanish football player, born in Spain saw his dream becoming true at such a young age."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/core/list": {
+        "get": {
+          "summary": "core-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/core/3": {
+        "get": {
+          "summary": "core-id",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/core/1": {
+        "delete": {
+          "summary": "core-delete",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "put": {
+          "summary": "core-update",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "sweet heart",
+                    "discover_date": "2024/12/12",
+                    "description": "good timing my little brother"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/core/new": {
+        "post": {
+          "summary": "core-create",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "marble wood",
+                    "discover_date": "0574/11/14",
+                    "description": "what are you doing?"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wood/list": {
+        "get": {
+          "summary": "wood-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/wood/2": {
+        "get": {
+          "summary": "New Request",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "delete": {
+          "summary": "New Request",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/wood/1": {
+        "put": {
+          "summary": "wood-update",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "apple",
+                    "discover_date": "9999/02/28",
+                    "description": "It is a beautiful day, we\u00ba are looking for something good to do"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wood/new": {
+        "post": {
+          "summary": "wood-create",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "marble mountain",
+                    "discover_date": "0074/02/28",
+                    "description": "Hello world."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wand/list": {
+        "get": {
+          "summary": "wand-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/wand/1": {
+        "get": {
+          "summary": "wand-id",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "delete": {
+          "summary": "wand-delete",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        },
+        "put": {
+          "summary": "New Request",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "wandmaker_id": 3,
+                    "core_id": 10,
+                    "flexibility": "Soft as a baby ass",
+                    "name": "Amazing brother",
+                    "description": "stronger than freshly squeezed lemon juice"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/wand/new": {
+        "post": {
+          "summary": "New Request",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "wandmaker_id": 5,
+                    "wood_id": 16,
+                    "core_id": 1,
+                    "length": 11,
+                    "flexibility": "very soft",
+                    "name": "Killing machine",
+                    "description": "Don\u00b4t mess with me."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/language/list": {
+        "get": {
+          "summary": "languages-list",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/language/new": {
+        "post": {
+          "summary": "language-create",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          },
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "name": "portuguesse",
+                    "iso_code": "pt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/language/4": {
+        "delete": {
+          "summary": "language-delete",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      }
+    }
+  }
