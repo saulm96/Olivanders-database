@@ -10,10 +10,6 @@ const app = express();
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
-
-
-
 app.use(express.static("src/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
