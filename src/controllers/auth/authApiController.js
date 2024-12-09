@@ -18,7 +18,7 @@ async function login(req, res) {
     try {
         const { email, password } = req.body;
         const user = await authController.login(email, password);
-        const token = jwt.sign({ user_id: user.user_id, role: user.role });
+        const token = jwt.sign({ user_id: user.user_id, role: user.role, language_id: user.language_id });
         res.json({ token });
     } catch (error) {
         console.error(error);

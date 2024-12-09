@@ -55,7 +55,8 @@ async function createUser(req, res) {
       req.body.last_name,
       req.body.birth_date,
       req.body.email,
-      req.body.password
+      req.body.password,
+      req.body.language_id,
     );
     res.json(createdUser);
   } catch (error) {

@@ -4,9 +4,8 @@ import cleanCoreData from "../../helpers/JSONcleaner/coreCleaner.js"
 
 async function getAllCores(req, res) {
     try {
-        const cores = await coreController.getAllCores();
+        const cores = await coreController.getAllCores(req.user.language_id);
         const cleanedCore = cleanCoreData(cores);
-
         res.json(cleanedCore);
 
     } catch (error) {
@@ -17,7 +16,7 @@ async function getAllCores(req, res) {
 
 async function getCoreById(req, res) {
     try {
-        const core = await coreController.getCoreById(req.params.id);
+        const core = await coreController.getCoreById(req.params.id, req.user.language_id);
         const cleanedCore = cleanCoreData(core);
 
         res.json(cleanedCore);
@@ -30,7 +29,7 @@ async function getCoreById(req, res) {
 async function deleteCore(req, res) {
     try {
         const deletedCore = await coreController.deleteCore(req.params.id);
-        res.json(deletedCore);
+        res.json(`You have deleted the core with id ${req.params.id}`);
     } catch (error) {
         error.status? res.status(error.status) : res.status(500);
         res.json({ error: error.message });
@@ -43,7 +42,7 @@ async function updateCore(req, res) {
         const updatedCore = req.body;
 
         const core = await coreController.updateCore(id, updatedCore);
-        res.json(core);
+        res.json(`You have updated the core with id ${req.params.id}`);
     } catch (error) {
         error.status? res.status(error.status) : res.status(500);
         res.json({ error: error.message });

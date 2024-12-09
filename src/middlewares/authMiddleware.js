@@ -1,4 +1,5 @@
 import jwt from '../config/jwt.js';
+import userController from "../controllers/users/userController.js"
 
 async function isAuthenticated(req, res, next) {
     const authorization = req.headers.authorization;
@@ -10,6 +11,14 @@ async function isAuthenticated(req, res, next) {
     const verified = jwt.verify(token);
 
     if (verified.error) return res.status(401).json({ message: 'incorrect jwt token' });
+
+    const languageId = await userController.getUserLanguage(verified.user_id);
+
+    req.user = {
+        user_id: verified.user_id,
+        role:verified.role,
+        language_id: languageId,
+    }
 
     next();
 }

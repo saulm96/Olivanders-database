@@ -104,8 +104,14 @@ CREATE TABLE IF NOT EXISTS `Olivanders`.`users` (
   `birth_date` VARCHAR(20) NOT NULL,
   `email` VARCHAR(60) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
+  `language_id` INT UNSIGNED NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  CONSTRAINT `fk_users_language_id`
+    FOREIGN KEY (`language_id`)
+    REFERENCES `Olivanders`.`languages` (`language_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -167,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `Olivanders`.`wood_has_language` (
   `wood_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(350) NOT NULL,
+  `description` VARCHAR(450) NOT NULL,
   PRIMARY KEY (`wood_id`, `language_id`),
   INDEX `idx_language_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_wood_language_id`
@@ -192,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `Olivanders`.`core_has_language` (
   `core_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(220) NOT NULL,
+  `description` VARCHAR(300) NOT NULL,
   PRIMARY KEY (`core_id`, `language_id`),
   INDEX `idx_language_core_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_core_language_core_id`
@@ -216,7 +222,7 @@ DROP TABLE IF EXISTS `Olivanders`.`wandmaker_has_language` ;
 CREATE TABLE IF NOT EXISTS `Olivanders`.`wandmaker_has_language` (
   `wandmaker_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
-  `specialty` VARCHAR(400) NULL DEFAULT NULL,
+  `specialty` VARCHAR(500) NULL DEFAULT NULL,
   PRIMARY KEY (`wandmaker_id`, `language_id`),
   INDEX `idx_wandmaker_language_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_wandmaker_language_id`

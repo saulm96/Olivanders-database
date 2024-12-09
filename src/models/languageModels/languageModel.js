@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/sequelize.js";
 
-const Language = sequelize.define("language", {
+const Language = sequelize.define("languages", {
     language_id: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,

@@ -3,7 +3,7 @@ import cleanWandmakerData from "../../helpers/JSONcleaner/wandmakerCleaner.js";
 
 async function getAllWandmakers(req, res) {
   try {
-    const wandmakers = await wandmakerController.getAllWandmakers();
+    const wandmakers = await wandmakerController.getAllWandmakers(req.user.language_id);
     const cleanWandmakers = cleanWandmakerData(wandmakers);
     res.json(cleanWandmakers);
   } catch (error) {
@@ -14,7 +14,7 @@ async function getAllWandmakers(req, res) {
 
 async function getWandmakerById(req, res) {
   try {
-    const wandmaker = await wandmakerController.getWandmakerById(req.params.id);
+    const wandmaker = await wandmakerController.getWandmakerById(req.params.id, req.user.language_id);
     const cleanWandmaker = cleanWandmakerData(wandmaker);
 
     res.json(cleanWandmaker);

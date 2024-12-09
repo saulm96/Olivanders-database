@@ -1,10 +1,14 @@
 import CoreTranslations from "../../models/coreModels/coreHasLanguage.js";
 import Core from "../../models/coreModels/wandHasCoreModel.js";
+import Language from "../../models/languageModels/languageModel.js"
 import translate from "../../config/translate.js"
 import errors from "../../helpers/errors/coreErrors.js"
 
-async function getAllCores() {
-  const cores = await CoreTranslations.findAll({
+
+async function getAllCores(language_id) {
+  // Fetch all cores in English
+  const coresInEnglish = await CoreTranslations.findAll({
+    where: { language_id: 1 },
     include: [
       {
         model: Core,
@@ -14,14 +18,35 @@ async function getAllCores() {
     raw: true,
   });
 
-  if (!cores) throw new errors.CORE_LIST_NOT_FOUND;
+  // Fetch the ISO code of the specified language
+  const usersIso = await Language.findOne({
+    where: { language_id },
+    attributes: ["iso_code"],
+  });
 
-  return cores;
-}
+  // Translate all cores in the specified language
+  for (let i = 0; i < coresInEnglish.length; i++) {
+    const { core_id, name, description } = coresInEnglish[i];
 
-async function getCoreById(id) {
-  const core = await CoreTranslations.findAll({
-    where: { core_id: id },
+    // Check if the core is already translated in the specified language
+    const coreTranslation = await CoreTranslations.findOne({
+      where: { core_id, language_id },
+    });
+
+    if (!coreTranslation) {
+      // If the core is not translated, create a new translation
+      const newCore = await CoreTranslations.create({
+        language_id: language_id,
+        core_id: core_id,
+        name: await translate(name, usersIso.iso_code),
+        description: await translate(description, usersIso.iso_code),
+      });
+    }
+  }
+
+  // Fetch all cores in the specified language
+  const finalCores = await CoreTranslations.findAll({
+    where: { language_id },
     include: [
       {
         model: Core,
@@ -30,11 +55,59 @@ async function getCoreById(id) {
     ],
     raw: true,
   });
-  if (!core) throw new errors.CORE_NOT_FOUND;
 
-  return core;
+  return finalCores;
 }
 
+async function getCoreById(id, language_id) {
+  const core = await CoreTranslations.findOne({
+    where: {
+      core_id: id,
+      language_id,
+    },
+    include: [
+      {
+        model: Core,
+        attributes: ["discover_date"],
+      },
+    ],
+    raw: true,
+  });
+
+  if (!core) {
+    const coreTranslation = await CoreTranslations.findOne({
+      where: { core_id: id, language_id: 1 }
+    });
+
+    const usersIso = await Language.findOne({
+      where: { language_id: language_id },
+      attributes: ["iso_code"],
+    });
+    const newCore = await CoreTranslations.create({
+      language_id: language_id,
+      core_id: id,
+      name: await translate(coreTranslation.name, usersIso.iso_code),
+      description: await translate(coreTranslation.description, usersIso.iso_code),
+    });
+  }
+
+  const finalCore = await CoreTranslations.findOne({
+    where: {
+      core_id: id,
+      language_id,
+    },
+    include: [
+      {
+        model: Core,
+        attributes: ["discover_date"],
+      },
+    ],
+    raw: true,
+  });
+
+
+  return finalCore;
+}
 async function deleteCore(id) {
   const core = await Core.findByPk(id);
   if (!core) throw new errors.CORE_NOT_FOUND;
@@ -47,63 +120,89 @@ async function updateCore(id, updatedData) {
   const core = await Core.findByPk(id);
   if (!core) throw new errors.CORE_NOT_FOUND;
 
-  // Translate the name and description fields from English to Spanish and Italian
-  const { name, description } = updatedData;
-  const translations = await Promise.all([
-    translate(name, "es"), // Translate to Spanish
-    translate(name, "it"), // Translate to Italian
-    translate(description, "es"), // Translate to Spanish
-    translate(description, "it"), // Translate to Italian
-  ]);
+  // Fetch the supported languages from the database
+  const supportedLanguages = await Language.findAll({
+    attributes: ["language_id", "iso_code"],
+  });
+
+  // Translate the name and description fields for each supported language
+  const translations = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      return {
+        name: await translate(updatedData.name, lang.iso_code),
+        description: await translate(updatedData.description, lang.iso_code),
+      };
+    })
+  );
 
   // Update the core data in the Core model
   await core.update(updatedData);
 
   // Update the core translations in the CoreTranslations model for the supported languages
-  const supportedLanguages = [
-    { language_id: 1, name: name, description: description }, // English
-    { language_id: 2, name: translations[0], description: translations[2] }, // Spanish
-    { language_id: 3, name: translations[1], description: translations[3] }, // Italian
-  ];
+  for (let i = 0; i < supportedLanguages.length; i++) {
+    const { language_id } = supportedLanguages[i];
+    const { name, description } = translations[i];
 
-  for (const language of supportedLanguages) {
     const coreTranslation = await CoreTranslations.findOne({
-      where: { core_id: id, language_id: language.language_id },
+      where: { core_id: id, language_id },
     });
-    await coreTranslation.update(language);
+
+    if (coreTranslation) {
+      // If the translation exists, update it
+      await coreTranslation.update({ name, description });
+    } else {
+      // If the translation does not exist, create a new one
+      await CoreTranslations.create({
+        language_id,
+        core_id: core.core_id,
+        name,
+        description,
+      });
+    }
   }
 
   return core;
 }
 
+
 async function createCore(newCoreData) {
   const { name, description, discover_date } = newCoreData;
 
   if (!name || !description || !discover_date) throw new errors.MISSING_DATA;
-  // Translate the name and description fields from English to Spanish and Italian
-  const translations = await Promise.all([
-    translate(name, "es"), // Translate to Spanish
-    translate(name, "it"), // Translate to Italian
-    translate(description, "es"), // Translate to Spanish
-    translate(description, "it"), // Translate to Italian
-  ]);
 
   // Create the core in the Core model
   const core = await Core.create({
     discover_date,
   });
 
-  if(!core) throw new errors.CORE_NOT_FOUND;
+  if (!core) throw new errors.CORE_NOT_FOUND;
 
-  // Create the core translations in the CoreTranslations model for the supported languages
-  const supportedLanguages = [
-    { language_id: 1, name, description }, // English
-    { language_id: 2, name: translations[0], description: translations[2] }, // Spanish
-    { language_id: 3, name: translations[1], description: translations[3] }, // Italian
-  ];
+  // Fetch the supported languages from the database
+  const supportedLanguages = await Language.findAll({
+    attributes: ["language_id", "iso_code"],
+  });
 
-  for (const language of supportedLanguages) {
-    await CoreTranslations.create({ ...language, core_id: core.core_id });
+  // Translate the name and description fields for each supported language
+  const translations = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      return {
+        name: await translate(name, lang.iso_code),
+        description: await translate(description, lang.iso_code),
+      };
+    })
+  );
+
+  // Create the core translations in the CoreTranslations model for each supported language
+  for (let i = 0; i < supportedLanguages.length; i++) {
+    const { language_id } = supportedLanguages[i];
+    const { name, description } = translations[i];
+
+    await CoreTranslations.create({
+      language_id,
+      core_id: core.core_id,
+      name,
+      description,
+    });
   }
 
   return core;

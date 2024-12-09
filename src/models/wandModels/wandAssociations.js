@@ -9,6 +9,7 @@ import CoreTranslations from '../coreModels/coreHasLanguage.js';
 function setupAssociations() {
   // Wand associations
   Wand.hasMany(WandHasLanguage, { foreignKey: 'wand_id' });
+  
   Wand.belongsTo(Wandmaker, { foreignKey: 'wandmaker_id' });
   Wand.belongsTo(Wood, { foreignKey: 'wood_id' });
   Wand.belongsTo(Core, { foreignKey: 'core_id' });
