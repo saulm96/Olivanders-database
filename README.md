@@ -95,6 +95,36 @@ The project includes comprehensive technical documentation generated using JSDoc
 
 **Pro Tip**: The JSDoc documentation provides an in-depth view of the project's internal workings, making it easier for developers to understand and contribute to the codebase. 📖✨
 
+## 📖 Swagger API Documentation
+
+### 🌐 Interactive API Documentation
+
+The Olivanders Shop API uses Swagger (OpenAPI) for comprehensive, interactive API documentation. This allows developers to explore and test API endpoints directly through a user-friendly web interface.
+
+#### 🔍 Accessing Swagger Documentation
+- **Endpoint**: `/swagger` 
+- **Local Access**: `http://localhost:3001/swagger`
+
+#### ✨ Features of Swagger Documentation
+- **Interactive Playground**: Try out API endpoints in real-time
+- **Complete Endpoint Details**: 
+  - Request methods
+  - Required parameters
+  - Response schemas
+  - Authentication requirements
+- **Request Example Generator**: Generate code snippets for different programming languages
+- **Response Model Previews**: See exact response structures for each endpoint
+
+#### 🚀 How to Use
+1. Start the application with `docker-compose up --build`
+2. Open a web browser
+3. Navigate to `http://localhost:3001/swagger`
+4. Explore and interact with the API endpoints
+5. Use the "Try it out" button to send test requests
+6. View request and response details for each endpoint
+
+**Pro Tip**: Swagger documentation is automatically generated from the OpenAPI specification (`openapi.json`), ensuring it always reflects the latest API structure. 🔧✨
+
 ## 🚀 Setup and Installation
 
 ### 📋 Prerequisites
