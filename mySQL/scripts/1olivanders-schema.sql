@@ -118,27 +118,22 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Olivanders`.`Transfers`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Olivanders`.`Transfers` ;
+DROP TABLE IF EXISTS `Olivanders`.`Characters` ;
 
-CREATE TABLE IF NOT EXISTS `Olivanders`.`Transfers` (
-  `transfer_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `Olivanders`.`Characters` (
+  `character_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `wandmaker_id` INT UNSIGNED NULL DEFAULT NULL,
-  `user_id` INT UNSIGNED NOT NULL,
+  `name`VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
   `wand_id` INT UNSIGNED NOT NULL,
-  `price` INT NULL DEFAULT NULL,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`transfer_id`),
-  INDEX `idx_transfer_wand_id` (`wand_id` ASC) VISIBLE,
-  INDEX `idx_transfer_user_id` (`user_id` ASC) VISIBLE,
-  INDEX `idx_transfer_wandmaker_id` (`wandmaker_id` ASC) VISIBLE,
+  `description` VARCHAR(500) NOT NULL,
+  `birth_date` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`character_id`),
+  INDEX `idx_character_wand_id` (`wand_id` ASC) VISIBLE,
+  INDEX `idx_character_wandmaker_id` (`wandmaker_id` ASC) VISIBLE,
   CONSTRAINT `fk_transfers_wand_id`
     FOREIGN KEY (`wand_id`)
     REFERENCES `Olivanders`.`wands` (`wand_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_transfers_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `Olivanders`.`users` (`user_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_transfers_wandmaker_id`
