@@ -1,41 +1,113 @@
-2024/11/23
-Generated the ER diagram for the database without the multilingual support relations.
+# 🚀 Olivanders Shop API Changelog
 
-2024/11/24
-Generated the database of the proyect and added the tables for the translations.
-Made all the relations for the database. Insert are still pending to do.
+## [Unreleased]
 
-2024/11/25
-Made the insert and fixed a few problems related with the scripts and started working on the app main structure.
+### 🔧 Improvements
+- Added comprehensive error handling
+- Enhanced logging mechanisms
+- Improved input validation for all endpoints
 
-2024/11/26
-Dockerized the backend
+## [0.2.0] - 2024/12/05
+### ✨ New Features
+- Implemented JWT authentication
+- Added role-based access control
+- Integrated DeepL translation service
+- Created middleware for language management
 
-2024/11/27
-Installed sequalize and started working on the models
+### 🛠️ Enhancements
+- Completed CRUD operations for all entities
+- Implemented comprehensive test suite with Jest
+- Added Swagger documentation for API endpoints
 
-2024/11/28
-Finished models started working on the CRUD
+## [0.1.0] - 2024/11/30
+### 🌟 Initial Release
+#### Available Endpoints
+- **Users**
+  - `user/list`: List all users
+  - `user/ID`: Get specific user by ID
 
-2024/11/29
-Fixed the relations of the sequalize and made all the basics functions for the CRUD
+- **Wands**
+  - `wand/list`: List all wands
+  - `wand/ID`: Get specific wand by ID
 
-2024/11/30
-Reorganized the json response. Also created a new folder called cleaner to clean and order all the jsons.
+- **Cores**
+  - `core/list`: List all wand cores
+  - `core/ID`: Get specific wand core by ID
 
-###0.1
-For now the API can show you four different endpoints:
-    - Users ("user/list" with the list of all users in the database)
-            ("user/ID" replace ID with the user id you are looking for)
+- **Woods**
+  - `wood/list`: List all wand woods
+  - `wood/ID`: Get specific wood by ID
 
-    -wands  ("wand/list" for the list of all wands in the database) 
-            ("wand/ID" replace ID with the wand id you are looking for)
+- **Wandmakers**
+  - `wandmaker/list`: List all wandmakers
+  - `wandmaker/ID`: Get specific wandmaker by ID
 
-    -cores  ("core/list" for the list of all existing wand cores in the database)
-            ("core/ID" replace ID with the wand core id you are looking for")
+## Development Journey 🧙‍♂️
 
-    -woods  ("wood/list" for the list of all existing wand woods in the database)
-            ("wand/ID" replace ID with the wood id you are looking for")
+### 2024/11/23 - Database Design Begins
+- Generated ER diagram for the database
+- Initial database structure without multilingual support relations
 
-    -wandmakers ("wandmaker/list" for the list of all existing wandmakers in the database)
-                ("wandmaker/ID" replace ID with the wandmaker id you are looking for)
+### 2024/11/24 - Database Expansion
+- Added database tables for translations
+- Completed database relations
+- Prepared for data insertion
+
+### 2024/11/25 - Project Kickoff
+- Completed database inserts
+- Fixed script-related issues
+- Started working on the main application structure
+
+### 2024/11/26 - Containerization
+- Successfully Dockerized the backend
+- Prepared development environment
+
+### 2024/11/27 - ORM Integration
+- Installed Sequelize
+- Started developing database models
+
+### 2024/11/28 - Model Development
+- Completed all database models
+- Prepared for CRUD operations
+
+### 2024/11/29 - CRUD Foundation
+- Fixed Sequelize relations
+- Implemented basic CRUD functions for all entities
+
+### 2024/11/30 - Response Optimization
+- Reorganized JSON responses
+- Created a 'cleaner' folder for JSON processing and formatting
+
+### 2024/12/01 - Authentication Development
+- Began JWT token implementation
+- Created user authentication flows
+
+### 2024/12/02 - Translation Service
+- Integrated DeepL translation API
+- Added language preference management
+
+### 2024/12/03 - Access Control
+- Implemented role-based access control
+- Created admin and user role permissions
+
+### 2024/12/04 - Testing
+- Developed comprehensive test suite
+- Added unit and integration tests for all endpoints
+
+### 2024/12/05 - Documentation
+- Generated JSDoc documentation
+- Created Swagger API documentation
+
+### 2024/12/06 - Documentation
+- Improved the translation system.
+- Added a functionality to auto-translate data if it's not available in the users language.
+
+## 🔮 Future Roadmap
+- [ ] Implement advanced search capabilities
+- [ ] Add more comprehensive error handling
+- [ ] Create frontend client application
+- [ ] Expand multilingual support
+
+---
+
+**Crafted with ✨ Magical Coding and ❤️ Harry Potter Inspiration**
