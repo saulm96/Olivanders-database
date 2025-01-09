@@ -36,7 +36,7 @@ async function deleteUser(req, res) {
 
 async function updateUser(req, res) {
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.user.user_id);
     if (!Number.isInteger(id)) {
       throw new Error("Invalid user ID");
     }

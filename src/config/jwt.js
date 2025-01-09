@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const SECRET = process.env.JWT_SECRET;
 
-function sign (data, expiresIn = "1h"){
+function sign (data, expiresIn = "24h"){
     const token = jwt.sign(data, SECRET ,{expiresIn});
     return token;
 }

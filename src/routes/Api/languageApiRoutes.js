@@ -6,4 +6,5 @@ const router = Router();
 router.get("/list", isAdmin, languageApiController.getAllLanguages);
 router.post("/new", isAdmin, languageApiController.createNewLanguage);
 router.delete("/:id", isAdmin, languageApiController.deleteLanguage);
+router.put("/:id", isAdmin, languageApiController.updateLanguage);
 export default router;

@@ -3,10 +3,13 @@ import dotenv from "dotenv";
 import router from "./routes/router.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "../openapi.json" assert {type: "json"}
+import cors from "cors";
 
 
 dotenv.config();
 const app = express();
+
+app.use(cors());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

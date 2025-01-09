@@ -8,7 +8,7 @@ router.get("/:id", userApiController.getUserById);
 
 router.post("/new", isAdmin, userApiController.createUser);
 
-router.put("/:id",isAdmin ,userApiController.updateUser);
+router.put("/update",isAdmin ,userApiController.updateUser);
 
 router.delete("/:id", isAdmin, userApiController.deleteUser);
 export default router;

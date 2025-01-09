@@ -20,11 +20,18 @@ async function deleteLanguage(id){
     await language.destroy();
     return language;
 }
+async function updateLanguage(id, data){
+    const language = await Language.findByPk(id);
+    if(!language) throw new Error("Language not found");
+    await language.update(data);
+    return language;
+}
 
 export const functions = {
     getAllLanguages,
     createNewLanguage,
-    deleteLanguage
+    deleteLanguage,
+    updateLanguage
 }
 
 export default functions;

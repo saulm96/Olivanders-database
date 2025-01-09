@@ -167,8 +167,8 @@ DROP TABLE IF EXISTS `Olivanders`.`wood_has_language` ;
 CREATE TABLE IF NOT EXISTS `Olivanders`.`wood_has_language` (
   `wood_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(450) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(800) NOT NULL,
   PRIMARY KEY (`wood_id`, `language_id`),
   INDEX `idx_language_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_wood_language_id`
@@ -192,8 +192,8 @@ DROP TABLE IF EXISTS `Olivanders`.`core_has_language` ;
 CREATE TABLE IF NOT EXISTS `Olivanders`.`core_has_language` (
   `core_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(300) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(800) NOT NULL,
   PRIMARY KEY (`core_id`, `language_id`),
   INDEX `idx_language_core_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_core_language_core_id`
@@ -217,7 +217,7 @@ DROP TABLE IF EXISTS `Olivanders`.`wandmaker_has_language` ;
 CREATE TABLE IF NOT EXISTS `Olivanders`.`wandmaker_has_language` (
   `wandmaker_id` INT UNSIGNED NOT NULL,
   `language_id` INT UNSIGNED NOT NULL,
-  `specialty` VARCHAR(500) NULL DEFAULT NULL,
+  `specialty` VARCHAR(800) NULL DEFAULT NULL,
   PRIMARY KEY (`wandmaker_id`, `language_id`),
   INDEX `idx_wandmaker_language_id` (`language_id` ASC) VISIBLE,
   CONSTRAINT `fk_wandmaker_language_id`
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `Olivanders`.`wand_has_language` (
   `wand_id` INT UNSIGNED NOT NULL,
   `flexibility` VARCHAR(45) NOT NULL,
   `name` VARCHAR(45) NULL DEFAULT NULL,
-  `description` VARCHAR(120) NOT NULL,
+  `description` VARCHAR(800) NOT NULL,
   PRIMARY KEY (`language_id`, `wand_id`),
   INDEX `fk_language_id_idx` (`language_id` ASC) VISIBLE,
   INDEX `fk_wand_id_idx` (`wand_id` ASC) VISIBLE,

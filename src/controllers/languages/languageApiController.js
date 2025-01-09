@@ -31,12 +31,23 @@ async function deleteLanguage(req, res) {
         res.json({ error: error.message })
     }
 }
-
+async function updateLanguage(req, res) {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        const updatedLanguage = await languageController.updateLanguage(id, data);
+        res.json(updatedLanguage);
+    } catch (error) {
+        error.status ? res.status(error.status) : res.status(500)
+        res.json({ error: error.message })
+    }
+}
 
 export const functions = {
     getAllLanguages,
     createNewLanguage,
     deleteLanguage,
+    updateLanguage
 }
 
 export default functions;   
