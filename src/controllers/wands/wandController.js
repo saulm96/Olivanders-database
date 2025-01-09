@@ -21,147 +21,160 @@ setupAssociations();
  */
 async function getAllWands(language_id) {
   // Fetch all wands in English
-console.log('Starting translation process for all wands');
+  console.log('Starting translation process for all wands');
 
-// Fetch all wands in English
-const wandsInEnglish = await Wand.findAll({
-  include: [
-    {
-      model: WandHasLanguage,
-      attributes: ["language_id", "flexibility", "name", "description"],
-      where: { language_id: 1 },
-    },
-    {
-      model: Wandmaker,
-      attributes: ["name", "last_name"],
-    },
-    {
-      model: Wood,
-      include: [
-        {
-          model: WoodTranslations,
-          attributes: ["name"],
-          where: { language_id: 1 },
-        },
-      ],
-    },
-    {
-      model: Core,
-      include: [
-        {
-          model: CoreTranslations,
-          attributes: ["name"],
-          where: { language_id: 1 },
-        },
-      ],
-    },
-  ],
-  raw: true,
-});
-
+  // Fetch the ISO code of the specified language
   const usersIso = await Language.findOne({
     where: { language_id },
     attributes: ["iso_code"],
   });
-// Translate all wands in the specified language
-for (let i = 0; i < wandsInEnglish.length; i++) {
-  const { wand_id, flexibility, name, description, Wood, Core } = wandsInEnglish[i];
-  console.log(`Processing wand with ID: ${wand_id}`);
-  console.log(`Wand details - Name: ${name}, Flexibility: ${flexibility}, Description: ${description}`);
-
-  // Check if the wand is already translated in the specified language
-  const wandTranslation = await WandHasLanguage.findOne({
-    where: { wand_id, language_id },
+  
+  console.log('ISO code for the specified language:', usersIso.iso_code);
+  
+  // Fetch all wands in English
+  const wandsInEnglish = await Wand.findAll({
+    include: [
+      {
+        model: WandHasLanguage,
+        attributes: ["language_id", "flexibility", "name", "description"],
+        where: { language_id: 1 },
+      },
+      {
+        model: Wandmaker,
+        attributes: ["name", "last_name"],
+      },
+      {
+        model: Wood,
+        include: [
+          {
+            model: WoodTranslations,
+            attributes: ["name"],
+            where: { language_id: 1 },
+          },
+        ],
+      },
+      {
+        model: Core,
+        include: [
+          {
+            model: CoreTranslations,
+            attributes: ["name"],
+            where: { language_id: 1 },
+          },
+        ],
+      },
+    ],
+    raw: true,
   });
-
-  if (!wandTranslation) {
-    // If the wand is not translated, create a new translation
-    console.log(`Translating wand: ${name}`);
-    const newWand = await WandHasLanguage.create({
-      language_id: language_id,
-      wand_id: wand_id,
-      flexibility: await translate(flexibility, usersIso.iso_code),
-      name: await translate(name, usersIso.iso_code),
-      description: await translate(description, usersIso.iso_code),
+  
+  console.log('Fetched wands in English:', wandsInEnglish);
+  
+  // Translate all wands in the specified language
+  for (let i = 0; i < wandsInEnglish.length; i++) {
+    const wand = wandsInEnglish[i];
+    const wand_id = wand['wand_id'];
+    const flexibility = wand['wand_has_languages.flexibility'];
+    const name = wand['wand_has_languages.name'];
+    const description = wand['wand_has_languages.description'];
+    const Wood = wand['wand_has_wood'];
+    const Core = wand['wand_has_core'];
+  
+    console.log(`Processing wand with ID: ${wand_id}`);
+    console.log(`Wand details - Name: ${name}, Flexibility: ${flexibility}, Description: ${description}`);
+  
+    // Check if the wand is already translated in the specified language
+    const wandTranslation = await WandHasLanguage.findOne({
+      where: { wand_id, language_id },
     });
-  }
-
-  // Check if the wood is already translated in the specified language
-  if (Wood) {
-    console.log(`Processing wood with ID: ${Wood.wood_id}`);
-    const woodTranslation = await WoodTranslations.findOne({
-      where: { wood_id: Wood.wood_id, language_id },
-    });
-
-    if (!woodTranslation) {
-      // If the wood is not translated, create a new translation
-      const translatedWoodName = Wood.name ? await translate(Wood.name, usersIso.iso_code) : null;
-      console.log(`Translating wood name: ${Wood.name} to ${translatedWoodName}`);
-      await WoodTranslations.create({
-        wood_id: Wood.wood_id,
+  
+    if (!wandTranslation) {
+      // If the wand is not translated, create a new translation
+      console.log(`Translating wand: ${name}`);
+      await WandHasLanguage.create({
         language_id: language_id,
-        name: translatedWoodName,
+        wand_id: wand_id,
+        flexibility: flexibility ? await translate(flexibility, usersIso.iso_code) : null,
+        name: name ? await translate(name, usersIso.iso_code) : null,
+        description: description ? await translate(description, usersIso.iso_code) : null,
       });
     }
-  }
-
-  // Check if the core is already translated in the specified language
-  if (Core) {
-    console.log(`Processing core with ID: ${Core.core_id}`);
-    const coreTranslation = await CoreTranslations.findOne({
-      where: { core_id: Core.core_id, language_id },
-    });
-
-    if (!coreTranslation) {
-      // If the core is not translated, create a new translation
-      const translatedCoreName = Core.name ? await translate(Core.name, usersIso.iso_code) : null;
-      console.log(`Translating core name: ${Core.name} to ${translatedCoreName}`);
-      await CoreTranslations.create({
-        core_id: Core.core_id,
-        language_id: language_id,
-        name: translatedCoreName,
+  
+    // Check if the wood is already translated in the specified language
+    if (Wood) {
+      console.log(`Processing wood with ID: ${Wood.wood_id}`);
+      const woodTranslation = await WoodTranslations.findOne({
+        where: { wood_id: Wood.wood_id, language_id },
       });
+  
+      if (!woodTranslation) {
+        // If the wood is not translated, create a new translation
+        const translatedWoodName = Wood.name ? await translate(Wood.name, usersIso.iso_code) : null;
+        console.log(`Translating wood name: ${Wood.name} to ${translatedWoodName}`);
+        await WoodTranslations.create({
+          wood_id: Wood.wood_id,
+          language_id: language_id,
+          name: translatedWoodName,
+        });
+      }
+    }
+  
+    // Check if the core is already translated in the specified language
+    if (Core) {
+      console.log(`Processing core with ID: ${Core.core_id}`);
+      const coreTranslation = await CoreTranslations.findOne({
+        where: { core_id: Core.core_id, language_id },
+      });
+  
+      if (!coreTranslation) {
+        // If the core is not translated, create a new translation
+        const translatedCoreName = Core.name ? await translate(Core.name, usersIso.iso_code) : null;
+        console.log(`Translating core name: ${Core.name} to ${translatedCoreName}`);
+        await CoreTranslations.create({
+          core_id: Core.core_id,
+          language_id: language_id,
+          name: translatedCoreName,
+        });
+      }
     }
   }
-}
-
-console.log('Translation process completed');
-// Fetch all wands in the specified language
-const finalWands = await Wand.findAll({
-  include: [
-    {
-      model: WandHasLanguage,
-      attributes: ["language_id", "flexibility", "name", "description"],
-      where: { language_id },
-    },
-    {
-      model: Wandmaker,
-      attributes: ["name", "last_name"],
-    },
-    {
-      model: Wood,
-      include: [
-        {
-          model: WoodTranslations,
-          attributes: ["name"],
-          where: { language_id },
-        },
-      ],
-    },
-    {
-      model: Core,
-      include: [
-        {
-          model: CoreTranslations,
-          attributes: ["name"],
-          where: { language_id },
-        },
-      ],
-    },
-  ],
-});
-
-return finalWands;
+  
+  console.log('Translation process completed');
+  // Fetch all wands in the specified language
+  const finalWands = await Wand.findAll({
+    include: [
+      {
+        model: WandHasLanguage,
+        attributes: ["language_id", "flexibility", "name", "description"],
+        where: { language_id },
+      },
+      {
+        model: Wandmaker,
+        attributes: ["name", "last_name"],
+      },
+      {
+        model: Wood,
+        include: [
+          {
+            model: WoodTranslations,
+            attributes: ["name"],
+            where: { language_id },
+          },
+        ],
+      },
+      {
+        model: Core,
+        include: [
+          {
+            model: CoreTranslations,
+            attributes: ["name"],
+            where: { language_id },
+          },
+        ],
+      },
+    ],
+  });
+  
+  return finalWands;
 }
 /**
  * @description Retrieves a wand by its ID in the specified language.
