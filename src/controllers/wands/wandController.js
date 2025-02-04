@@ -5,9 +5,11 @@ import WandHasLanguage from "../../models/wandModels/wandHasLanguage.js";
 import Wandmaker from "../../models/wandmakersModels/wandmakerModel.js";
 import Core from "../../models/coreModels/wandHasCoreModel.js";
 import CoreTranslations from "../../models/coreModels/coreHasLanguage.js";
+import coreControler from "../cores/coreController.js"
 import Language from "../../models/languageModels/languageModel.js"
 import Wood from "../../models/woodModels/wandHasWoodModel.js";
 import WoodTranslations from "../../models/woodModels/woodHasLanguage.js";
+import woodControler from "../woods/woodController.js";
 import translate from "../../config/translate.js";
 import errors from "../../helpers/errors/wandErrors.js";
 
@@ -19,7 +21,18 @@ setupAssociations();
  * @returns {Array<Object>} An array of objects, each representing a wand, with its flexibility, name, description, wandmaker's name and last name, wood's name, and core's name.
  * @throws {errors.WAND_LIST_NOT_AVAILABLE} If the wands list is not available.
  */
+
+
 async function getAllWands(language_id) {
+  // Fetch all wands in English
+
+  // Fetch the ISO code of the specified language
+  const usersIso = await Language.findOne({
+    where: { language_id },
+    attributes: ["iso_code"],
+  });
+
+
   // Fetch all wands in English
   const wandsInEnglish = await Wand.findAll({
     include: [
@@ -56,15 +69,17 @@ async function getAllWands(language_id) {
     raw: true,
   });
 
-  // Fetch the ISO code of the specified language
-  const usersIso = await Language.findOne({
-    where: { language_id },
-    attributes: ["iso_code"],
-  });
-
   // Translate all wands in the specified language
   for (let i = 0; i < wandsInEnglish.length; i++) {
-    const { wand_id, flexibility, name, description } = wandsInEnglish[i];
+    const wand = wandsInEnglish[i];
+    const wand_id = wand['wand_id'];
+    const flexibility = wand['wand_has_languages.flexibility'];
+    const name = wand['wand_has_languages.name'];
+    const description = wand['wand_has_languages.description'];
+    const Wood = wand['wand_has_wood->wood_has_languages.name'];
+    const Core = wand['wand_has_core->core_has_languages.name'];
+    const wood_id = wand["wand_has_wood.wood_id"];
+    const core_id = wand["wand_has_core.core_id"];
 
     // Check if the wand is already translated in the specified language
     const wandTranslation = await WandHasLanguage.findOne({
@@ -72,18 +87,20 @@ async function getAllWands(language_id) {
     });
 
     if (!wandTranslation) {
-      // If the wand is not translated, create a new translation
       await WandHasLanguage.create({
         language_id: language_id,
         wand_id: wand_id,
-        flexibility: await translate(flexibility, usersIso.iso_code),
-        name: await translate(name, usersIso.iso_code),
-        description: await translate(description, usersIso.iso_code),
+        flexibility: flexibility ? await translate(flexibility, usersIso.iso_code) : null,
+        name: name ? await translate(name, usersIso.iso_code) : null,
+        description: description ? await translate(description, usersIso.iso_code) : null,
       });
+      //update the core and wood so they will be translated
+      await coreControler.getCoreById(core_id, language_id);
+      await woodControler.getWoodById(wood_id, language_id);
     }
   }
 
-  // Fetch all wands in the specified language
+
   const finalWands = await Wand.findAll({
     include: [
       {
@@ -118,9 +135,9 @@ async function getAllWands(language_id) {
     ],
   });
 
-  if (!finalWands) throw new errors.WAND_LIST_NOT_AVAILABLE();
   return finalWands;
 }
+
 /**
  * @description Retrieves a wand by its ID in the specified language.
  * @param {Integer} id - The ID of the wand to retrieve.
@@ -129,39 +146,39 @@ async function getAllWands(language_id) {
  * @throws {errors.WAND_NOT_FOUND} If the wand is not found.
  */
 async function getWandById(id, language_id) {
-const wands = await Wand.findOne({
-  where: { wand_id: id },
-  include: [
-    {
-      model: WandHasLanguage,
-      attributes: ["language_id", "flexibility", "name", "description"],
-      where: { language_id },
-    },
-    {
-      model: Wandmaker,
-      attributes: ["name", "last_name"],
-    },
-    {
-      model: Wood,
-      include: [
-        {
-          model: WoodTranslations,
-          attributes: ["name"],
-        },
-      ],
-    },
-    {
-      model: Core,
-      include: [
-        {
-          model: CoreTranslations,
-          attributes: ["name"],
-        },
-      ],
-    },
-  ],
-})
-return wands;
+  const wands = await Wand.findOne({
+    where: { wand_id: id },
+    include: [
+      {
+        model: WandHasLanguage,
+        attributes: ["language_id", "flexibility", "name", "description"],
+        where: { language_id },
+      },
+      {
+        model: Wandmaker,
+        attributes: ["name", "last_name"],
+      },
+      {
+        model: Wood,
+        include: [
+          {
+            model: WoodTranslations,
+            attributes: ["name"],
+          },
+        ],
+      },
+      {
+        model: Core,
+        include: [
+          {
+            model: CoreTranslations,
+            attributes: ["name"],
+          },
+        ],
+      },
+    ],
+  })
+  return wands;
 }
 
 /**
@@ -213,9 +230,9 @@ async function updateWand(id, updatedData) {
     const { flexibility, name, description } = translations[i];
     const wandTranslation = await WandHasLanguage.findOne({ where: { wand_id: id, language_id } });
 
-    if(wandTranslation){
+    if (wandTranslation) {
       await wandTranslation.update({ flexibility, name, description });
-    }else{
+    } else {
       await WandHasLanguage.create({
         language_id,
         wand_id: wand.wand_id,
